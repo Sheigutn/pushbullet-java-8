@@ -1,18 +1,15 @@
 package com.github.sheigutn.pushbullet;
 
 import com.github.sheigutn.pushbullet.ephemeral.*;
-import com.github.sheigutn.pushbullet.exception.PushbulletApiException;
-import com.github.sheigutn.pushbullet.http.defaults.delete.DeleteAllPushesRequest;
-import com.github.sheigutn.pushbullet.http.defaults.get.*;
-import com.github.sheigutn.pushbullet.http.defaults.post.*;
-import com.github.sheigutn.pushbullet.items.push.sendable.defaults.*;
-import com.github.sheigutn.pushbullet.items.push.sent.defaults.*;
-import com.github.sheigutn.pushbullet.items.user.CurrentUser;
 import com.github.sheigutn.pushbullet.exception.PushbulletApiError;
+import com.github.sheigutn.pushbullet.exception.PushbulletApiException;
 import com.github.sheigutn.pushbullet.gson.PushbulletContainerPostProcessor;
 import com.github.sheigutn.pushbullet.gson.RuntimeTypeAdapterFactory;
 import com.github.sheigutn.pushbullet.http.EntityEnclosingRequest;
 import com.github.sheigutn.pushbullet.http.Request;
+import com.github.sheigutn.pushbullet.http.defaults.delete.DeleteAllPushesRequest;
+import com.github.sheigutn.pushbullet.http.defaults.get.*;
+import com.github.sheigutn.pushbullet.http.defaults.post.*;
 import com.github.sheigutn.pushbullet.interfaces.Pushable;
 import com.github.sheigutn.pushbullet.items.ListResponse;
 import com.github.sheigutn.pushbullet.items.PushbulletContainer;
@@ -28,9 +25,12 @@ import com.github.sheigutn.pushbullet.items.grant.Grant;
 import com.github.sheigutn.pushbullet.items.grant.GrantClient;
 import com.github.sheigutn.pushbullet.items.oauth.OAuthClient;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
+import com.github.sheigutn.pushbullet.items.push.sendable.defaults.*;
 import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.defaults.*;
 import com.github.sheigutn.pushbullet.items.user.ChatUser;
 import com.github.sheigutn.pushbullet.items.user.Contact;
+import com.github.sheigutn.pushbullet.items.user.CurrentUser;
 import com.github.sheigutn.pushbullet.stream.PushbulletWebsocketClient;
 import com.github.sheigutn.pushbullet.stream.message.NopStreamMessage;
 import com.github.sheigutn.pushbullet.stream.message.PushStreamMessage;
@@ -65,8 +65,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -284,7 +282,7 @@ public class Pushbullet implements Pushable {
      * @return A list of pushes that included a file
      */
     public List<SentFilePush> getAllFilePushes() {
-        return getPushes(SentFilePush.class);
+        return getAllPushes(SentFilePush.class);
     }
 
     /**
@@ -293,7 +291,7 @@ public class Pushbullet implements Pushable {
      * @return A list of pushes that included a note
      */
     public List<SentNotePush> getAllNotePushes() {
-        return getPushes(SentNotePush.class);
+        return getAllPushes(SentNotePush.class);
     }
 
     /**
@@ -302,7 +300,7 @@ public class Pushbullet implements Pushable {
      * @return A list of pushes that included a link
      */
     public List<SentLinkPush> getAllLinkPushes() {
-        return getPushes(SentLinkPush.class);
+        return getAllPushes(SentLinkPush.class);
     }
 
     /**
@@ -312,7 +310,7 @@ public class Pushbullet implements Pushable {
      */
     @Deprecated
     public List<SentAddressPush> getAllAddressPushes() {
-        return getPushes(SentAddressPush.class);
+        return getAllPushes(SentAddressPush.class);
     }
 
     /**
@@ -322,7 +320,7 @@ public class Pushbullet implements Pushable {
      */
     @Deprecated
     public List<SentListPush> getAllListPushes() {
-        return getPushes(SentListPush.class);
+        return getAllPushes(SentListPush.class);
     }
 
     /**
@@ -341,7 +339,14 @@ public class Pushbullet implements Pushable {
         return FunctionUtil.getFirstWithCondition(getAllPushes(), pushIdentity, SentPush::getIdentity);
     }
 
-    private <T extends SentPush> List<T> getPushes(Class<T> clazz) {
+    /**
+     * Get pushes by a subclass of {@link SentPush}
+     * @param clazz The subclass of {@link SentPush}
+     * @param <T>   The type of the class
+     * @return A list of pushes
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends SentPush> List<T> getAllPushes(Class<T> clazz) {
         return getAllPushes().stream()
                 .filter(push -> clazz.isAssignableFrom(push.getClass()))
                 .map(push -> (T) push)
