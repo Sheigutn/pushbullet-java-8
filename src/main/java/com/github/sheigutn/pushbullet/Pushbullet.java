@@ -609,7 +609,6 @@ public class Pushbullet implements Pushable {
         //Execute request
         try(CloseableHttpClient client = HttpClients.createDefault(); CloseableHttpResponse response = client.execute(httpMessage)) {
             String responseString = EntityUtils.toString(response.getEntity());
-            System.out.println(responseString);
             this.rateLimit = Integer.valueOf(HttpUtil.getHeaderValue(response, "X-Ratelimit-Limit", "0"));
             this.rateRemaining = Integer.valueOf(HttpUtil.getHeaderValue(response, "X-Ratelimit-Remaining", "0"));
             this.resetTimestamp = Long.valueOf(HttpUtil.getHeaderValue(response, "X-Ratelimit-Reset", "0"));
