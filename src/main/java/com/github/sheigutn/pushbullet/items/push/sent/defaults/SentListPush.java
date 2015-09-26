@@ -26,4 +26,9 @@ public class SentListPush extends SentPush {
      * The items of the list
      */
     private List<ListItem> items;
+
+    @Override
+    public String getBody() {
+        return null;
+    }
 }

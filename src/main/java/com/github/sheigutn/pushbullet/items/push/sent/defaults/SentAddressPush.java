@@ -23,4 +23,14 @@ public class SentAddressPush extends SentPush {
      * The address
      */
     private String address;
+
+    @Override
+    public String getTitle() {
+        return name;
+    }
+
+    @Override
+    public String getBody() {
+        return address;
+    }
 }

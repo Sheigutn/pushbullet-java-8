@@ -61,4 +61,9 @@ public class SentFilePush extends SentPush {
     public boolean hasImageFile() {
         return imageUrl != null;
     }
+
+    @Override
+    public String getTitle() {
+        return null;
+    }
 }

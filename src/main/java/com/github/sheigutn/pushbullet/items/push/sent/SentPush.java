@@ -126,4 +126,16 @@ public abstract class SentPush extends PushbulletObject implements Deletable, Di
         getPushbullet().executeRequest(new ChangePushDismissStatusRequest(getIdentity(), true));
         setDismissed(true);
     }
+
+    /**
+     * Get the title of this push
+     * @return The title of this push
+     */
+    public abstract String getTitle();
+
+    /**
+     * Get the body of this push
+     * @return The body of this push
+     */
+    public abstract String getBody();
 }
