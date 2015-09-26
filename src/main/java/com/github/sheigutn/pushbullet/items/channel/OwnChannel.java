@@ -20,7 +20,7 @@ import java.util.List;
 
 @Data
 @ToString(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.NONE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OwnChannel extends PushbulletObject implements Deletable {
 
     /**

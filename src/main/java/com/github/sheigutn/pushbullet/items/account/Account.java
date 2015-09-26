@@ -11,7 +11,7 @@ import lombok.ToString;
 
 @Data
 @ToString(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.NONE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Account extends PushbulletObject implements Deletable {
 
     /**

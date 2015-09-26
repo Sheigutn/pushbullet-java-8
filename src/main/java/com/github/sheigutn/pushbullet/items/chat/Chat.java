@@ -16,7 +16,7 @@ import lombok.ToString;
 
 @Data
 @ToString(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.NONE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Chat extends PushbulletObject implements Deletable, Mutable, Pushable {
 
     /**

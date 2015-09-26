@@ -13,7 +13,7 @@ import lombok.ToString;
 
 @Data
 @ToString(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.NONE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends PushbulletObject implements Pushable {
 
     /**

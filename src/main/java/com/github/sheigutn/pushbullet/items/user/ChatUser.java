@@ -13,7 +13,7 @@ import lombok.ToString;
 
 @Data
 @ToString(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.NONE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ChatUser extends PushbulletIdentifiable implements Pushable {
 
     /**
