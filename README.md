@@ -17,7 +17,7 @@ To get all devices, use:
 List<Device> devices = pushbullet.getDevices();
 ```
 
-To get a specific device, you can use these properties as the param:
+To get a specific device, you can use one of these properties:
 - The name of the device
 - The identity of the device
 
@@ -58,7 +58,7 @@ To get all currently held chats, use:
 List<Chat> chats = pushbullet.getChats();
 ```
 
-To get a specific chat, you can use these properties as the param:
+To get a specific chat, you can use one of these properties:
 - The identity of the chat
 - The name of the user this chat is held with
 - The email of the user

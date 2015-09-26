@@ -16,25 +16,12 @@
 package com.github.sheigutn.pushbullet.stream;
 
 import com.github.sheigutn.pushbullet.Pushbullet;
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.DefaultHttpHeaders;
-import io.netty.handler.codec.http.HttpClientCodec;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
-import io.netty.handler.codec.http.websocketx.WebSocketVersion;
-import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
-import io.netty.handler.ssl.SslContext;
+import com.github.sheigutn.pushbullet.stream.message.StreamMessage;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
+import javax.websocket.*;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,9 +35,11 @@ public final class PushbulletWebsocketClient {
 
     protected final Collection<PushbulletWebsocketListener> websocketListeners = new ArrayList<>();
 
-    private Channel channel;
+    private ClientEndpointConfig config = ClientEndpointConfig.Builder.create().build();
 
-    private EventLoopGroup group;
+    private WebSocketContainer webSocketContainer = ContainerProvider.getWebSocketContainer();
+
+    private Session websocketSession;
 
     public PushbulletWebsocketClient(Pushbullet pushbullet) {
         this.pushbullet = pushbullet;
@@ -79,50 +68,42 @@ public final class PushbulletWebsocketClient {
     /**
      * @return Whether the client is connected to the server
      */
-    public boolean isConnected() {
-        return channel != null && channel.isOpen() && channel.isActive();
+    public synchronized boolean isConnected() {
+        return websocketSession != null && websocketSession.isOpen();
     }
 
     /**
      * Connects the client to the server
      */
     @SneakyThrows
-    public void connect() {
-        URI uri = new URI(BASE_URL + pushbullet.getAccessToken());
-        String host = uri.getHost();
-        int port = uri.getPort();
-        final SslContext sslCtx = SslContext.newClientContext();
-        group = new NioEventLoopGroup();
-        final PushbulletWebsocketClientHandler handler =
-                new PushbulletWebsocketClientHandler(this,
-                        WebSocketClientHandshakerFactory.newHandshaker(
-                                uri, WebSocketVersion.V13, null, false, new DefaultHttpHeaders()));
-        Bootstrap b = new Bootstrap();
-        b.group(group)
-                .channel(NioSocketChannel.class)
-                .handler(new ChannelInitializer<SocketChannel>() {
+    public synchronized void connect() {
+        if(websocketSession != null) return;
+        websocketSession = webSocketContainer.connectToServer(new Endpoint() {
+            @Override
+            public void onOpen(Session session, EndpointConfig config) {
+                //noinspection Convert2Lambda
+                session.addMessageHandler(new MessageHandler.Whole<String>() {
                     @Override
-                    protected void initChannel(SocketChannel ch) {
-                        ChannelPipeline p = ch.pipeline();
-                        p.addLast(sslCtx.newHandler(ch.alloc(), host, port))
-                                .addLast(
-                                        new HttpClientCodec(),
-                                        new HttpObjectAggregator(8192),
-                                        new WebSocketClientCompressionHandler(),
-                                        handler);
+                    public void onMessage(String message) {
+                        websocketListeners.forEach(websocketListener -> websocketListener.handle(pushbullet, pushbullet.getGson().fromJson(message, StreamMessage.class)));
                     }
                 });
-        channel = b.connect(uri.getHost(), port).sync().channel();
-        handler.handshakeFuture().sync();
+            }
+        }, config, new URI(BASE_URL + pushbullet.getAccessToken()));
     }
 
     /**
      * Disconnects the client from the server
      */
-    public void disconnect() {
-        channel.writeAndFlush(new CloseWebSocketFrame());
-        channel.close().syncUninterruptibly();
-        channel = null;
-        group.shutdownGracefully();
+    public synchronized void disconnect() {
+        if(websocketSession == null) return;
+        try {
+            websocketSession.close();
+        } catch (IOException e) {
+
+        }
+        finally {
+            websocketSession = null;
+        }
     }
 }
