@@ -56,6 +56,12 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.1</version>
                 <configuration>
+                    <aggregate>true</aggregate>
+                    <show>public</show>
+                    <nohelp>true</nohelp>
+                    <header>Pushbullet Java 8 API, ${project.version}</header>
+                    <footer>Pushbullet Java 8 API, ${project.version}</footer>
+                    <doctitle>Pushbullet Java 8 API, ${project.version}</doctitle>
                     <additionalparam>-Xdoclint:none</additionalparam>
                 </configuration>
                 <executions>
@@ -66,6 +72,19 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-publish-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
+                    <checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
+                    <content>${project.reporting.outputDirectory}/apidocs</content>
+                    <skipDeletedFiles>true</skipDeletedFiles>
+                    <pubScmUrl>scm:git:git@github.com:Sheigutn/pushbullet-java-8.git</pubScmUrl>
+                    <scmBranch>gh-pages</scmBranch> <!-- branch with static site -->
+                </configuration>
             </plugin>
         </plugins>
     </build>
