@@ -205,9 +205,18 @@ public class Pushbullet implements Pushable {
     }
 
     /**
+     * Create a channel with the specified tag
+     * @param tag The tag for this channel
+     * @return A new {@link OwnChannel} object
+     */
+    public OwnChannel createChannel(String tag) {
+        return createChannel(tag, null);
+    }
+
+    /**
      * Create a channel with the specified tag and name
-     * @param name        The name for this channel
      * @param tag         The tag for this channel
+     * @param name        The name for this channel
      * @return A new {@link OwnChannel} object
      */
     public OwnChannel createChannel(String tag, String name) {
@@ -216,8 +225,8 @@ public class Pushbullet implements Pushable {
 
     /**
      * Create a channel with the specified tag, name and description
-     * @param name        The name for this channel
      * @param tag         The tag for this channel
+     * @param name        The name for this channel
      * @param description The description for this channel
      * @return A new {@link OwnChannel} object
      */
@@ -227,8 +236,8 @@ public class Pushbullet implements Pushable {
 
     /**
      * Create a channel with the specified tag, name, description and image file
-     * @param name        The name for this channel
      * @param tag         The tag for this channel
+     * @param name        The name for this channel
      * @param description The description for this channel
      * @param imageFile   The image file for this channel
      * @return A new {@link OwnChannel} object
@@ -239,8 +248,8 @@ public class Pushbullet implements Pushable {
 
     /**
      * Create a channel with the specified tag, name, description and image url
-     * @param name        The name for this channel
      * @param tag         The tag for this channel
+     * @param name        The name for this channel
      * @param description The description for this channel
      * @param imageUrl    The image url for this channel
      * @return A new {@link OwnChannel} object
@@ -248,6 +257,65 @@ public class Pushbullet implements Pushable {
     public OwnChannel createChannel(String tag, String name, String description, String imageUrl) {
         return executeRequest(new CreateChannelRequest(tag, name, description, imageUrl));
     }
+
+    /**
+     * Get or create a channel with the specified tag
+     * @param tag         The tag for this channel
+     * @return A new {@link OwnChannel} object
+     */
+    public OwnChannel getOrCreateChannel(String nameOrTagOrIdentity, String tag) {
+        return getOrCreateChannel(nameOrTagOrIdentity, tag, null);
+    }
+
+    /**
+     * Get or create a channel with the specified tag and name
+     * @param tag         The tag for this channel
+     * @param name        The name for this channel
+     * @return A new {@link OwnChannel} object
+     */
+    public OwnChannel getOrCreateChannel(String nameOrTagOrIdentity, String tag, String name) {
+        return getOrCreateChannel(nameOrTagOrIdentity, tag, name, null);
+    }
+
+    /**
+     * Get or create a channel with the specified tag, name and description
+     * @param tag         The tag for this channel
+     * @param name        The name for this channel
+     * @param description The description for this channel
+     * @return A new {@link OwnChannel} object
+     */
+    public OwnChannel getOrCreateChannel(String nameOrTagOrIdentity, String tag, String name, String description) {
+        return getOrCreateChannel(nameOrTagOrIdentity, tag, name, description, (String) null);
+    }
+
+    /**
+     * Get or create a channel with the specified tag, name, description and image file
+     * @param tag         The tag for this channel
+     * @param name        The name for this channel
+     * @param description The description for this channel
+     * @param imageFile   The image file for this channel
+     * @return A new {@link OwnChannel} object
+     */
+    public OwnChannel getOrCreateChannel(String nameOrTagOrIdentity, String tag, String name, String description, UploadFile imageFile) {
+        return getOrCreateChannel(nameOrTagOrIdentity, tag, name, description, imageFile.getFileUrl());
+    }
+
+    /**
+     * Get or create a channel with the specified tag, name, description and image url
+     * @param tag         The tag for this channel
+     * @param name        The name for this channel
+     * @param description The description for this channel
+     * @param imageUrl    The image url for this channel
+     * @return A new {@link OwnChannel} object
+     */
+    public OwnChannel getOrCreateChannel(String nameOrTagOrIdentity, String tag, String name, String description, String imageUrl) {
+        OwnChannel channel = getOwnChannel(nameOrTagOrIdentity);
+        if(channel == null) {
+            channel = createChannel(tag, name, description, imageUrl);
+        }
+        return channel;
+    }
+
 
     /**
      * Create a new chat with the specified email
@@ -420,6 +488,20 @@ public class Pushbullet implements Pushable {
         Chat chat = FunctionUtil.getFirstWithCondition(chats, chatIdentityUserNameEmailOrIdentity, Chat::getIdentity);
         if(chat == null) {
             return FunctionUtil.getFirstWithFunctionWithCondition(chats, Chat::getWith, chatIdentityUserNameEmailOrIdentity, ChatUser::getName, ChatUser::getIdentity, ChatUser::getEmail);
+        }
+        return chat;
+    }
+
+    /**
+     * Get or create a chat with the specified user
+     *
+     * @param userEmail The email of the user
+     * @return A new {@link Chat} object
+     */
+    public Chat getOrCreateChat(String userEmail) {
+        Chat chat = getChat(userEmail);
+        if(chat == null) {
+            chat = createChat(userEmail);
         }
         return chat;
     }
