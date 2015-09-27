@@ -1,5 +1,6 @@
 package com.github.sheigutn.pushbullet;
 
+import com.github.sheigutn.pushbullet.cryptography.Encryption;
 import com.github.sheigutn.pushbullet.ephemeral.*;
 import com.github.sheigutn.pushbullet.exception.PushbulletApiError;
 import com.github.sheigutn.pushbullet.exception.PushbulletApiException;
