@@ -6,7 +6,7 @@ This is an inofficial pushbullet library for Java 8.
 
 Javadoc is located [here](http://sheigutn.github.io/pushbullet-java-8).
 
-# Usage
+# Usage (WIP!
 
 ```java
 String apiToken = ...;
