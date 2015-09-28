@@ -13,6 +13,14 @@ String apiToken = ...;
 Pushbullet pushbullet = new Pushbullet(apiToken);
 ```
 
+If you need end-to-end encryption, apply the password as the second parameter:
+
+```java
+String apiToken = ...;
+String password = ...;
+Pushbullet pushbullet = new Pushbullet(apiToken, password);
+```
+
 ## /v2/devices
 
 To get all devices, use:
