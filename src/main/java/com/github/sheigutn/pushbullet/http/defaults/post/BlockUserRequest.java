@@ -6,9 +6,6 @@ import com.github.sheigutn.pushbullet.items.block.Block;
 import com.google.gson.Gson;
 import org.apache.http.client.methods.HttpPost;
 
-/**
- * @author Flo
- */
 public class BlockUserRequest extends PostRequest<Block> {
 
     private String email;

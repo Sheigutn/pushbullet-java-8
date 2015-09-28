@@ -7,9 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-/**
- * @author Flo
- */
 @Data
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

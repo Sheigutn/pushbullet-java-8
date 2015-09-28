@@ -10,9 +10,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 
-/**
- * @author Flo
- */
 @RequiredArgsConstructor
 public class EphemeralEncryptionHandler implements TypeAdapterFactory {
 

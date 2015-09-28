@@ -17,9 +17,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.stream.Stream;
 
-/**
- * @author Flo
- */
 public class Encryption {
 
     /**

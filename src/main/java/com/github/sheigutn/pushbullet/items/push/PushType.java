@@ -2,9 +2,6 @@ package com.github.sheigutn.pushbullet.items.push;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * @author Florian
- */
 public enum PushType {
 
     /**
