@@ -3,7 +3,7 @@ package com.github.sheigutn.pushbullet.http.defaults.post;
 import com.github.sheigutn.pushbullet.http.PostRequest;
 import com.github.sheigutn.pushbullet.items.channel.OwnChannel;
 import com.github.sheigutn.pushbullet.items.file.UploadFile;
-import com.github.sheigutn.pushbullet.util.Urls;
+import com.github.sheigutn.pushbullet.http.Urls;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;

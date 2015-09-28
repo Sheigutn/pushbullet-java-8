@@ -1,10 +1,12 @@
 package com.github.sheigutn.pushbullet.items.user;
 
+import com.github.sheigutn.pushbullet.http.defaults.post.BlockUserRequest;
+import com.github.sheigutn.pushbullet.interfaces.Blockable;
+import com.github.sheigutn.pushbullet.interfaces.Pushable;
 import com.github.sheigutn.pushbullet.items.PushbulletObject;
 import com.github.sheigutn.pushbullet.items.push.sendable.ReceiverType;
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
-import com.github.sheigutn.pushbullet.interfaces.Pushable;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
+import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -14,7 +16,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends PushbulletObject implements Pushable {
+public class User extends PushbulletObject implements Pushable, Blockable {
 
     /**
      * The email of this user
@@ -44,5 +46,11 @@ public class User extends PushbulletObject implements Pushable {
         push = push.clone();
         push.setReceiver(ReceiverType.EMAIL, getEmail());
         return sendPush(getPushbullet(), push);
+    }
+
+    @Override
+    public void block() {
+        if(!isActive()) return;
+        getPushbullet().executeRequest(new BlockUserRequest(getEmail()));
     }
 }

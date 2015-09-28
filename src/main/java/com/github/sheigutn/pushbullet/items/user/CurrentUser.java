@@ -39,6 +39,11 @@ public class CurrentUser extends User {
         this.preferences = preferences;
     }
 
+    @Override
+    public void block() {
+        throw new UnsupportedOperationException();
+    }
+
     @Data
     public class GoogleUserInfo {
 

@@ -2,7 +2,7 @@ package com.github.sheigutn.pushbullet.http.defaults.get;
 
 import com.github.sheigutn.pushbullet.http.GetRequest;
 import com.github.sheigutn.pushbullet.items.channel.ChannelInfo;
-import com.github.sheigutn.pushbullet.util.Urls;
+import com.github.sheigutn.pushbullet.http.Urls;
 import lombok.Data;
 import org.apache.http.client.utils.URIBuilder;
 

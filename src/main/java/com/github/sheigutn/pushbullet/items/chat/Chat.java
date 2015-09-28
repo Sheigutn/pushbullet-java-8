@@ -1,6 +1,8 @@
 package com.github.sheigutn.pushbullet.items.chat;
 
 import com.github.sheigutn.pushbullet.http.defaults.delete.DeleteSpecificChatRequest;
+import com.github.sheigutn.pushbullet.http.defaults.post.BlockUserRequest;
+import com.github.sheigutn.pushbullet.interfaces.Blockable;
 import com.github.sheigutn.pushbullet.items.PushbulletObject;
 import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
 import com.github.sheigutn.pushbullet.http.defaults.post.UpdateChatMuteStatusRequest;
@@ -17,7 +19,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Chat extends PushbulletObject implements Deletable, Mutable, Pushable {
+public class Chat extends PushbulletObject implements Deletable, Mutable, Pushable, Blockable {
 
     /**
      * The user this chat is held with
@@ -43,6 +45,16 @@ public class Chat extends PushbulletObject implements Deletable, Mutable, Pushab
 
     public void unmute() {
         updateMute(false);
+    }
+
+    /**
+     * Used to block the user this chat is held with
+     */
+    @Override
+    public void block() {
+        if(!isActive()) return;
+        getPushbullet().executeRequest(new BlockUserRequest(getWith().getEmail()));
+        setActive(false);
     }
 
     private void updateMute(boolean muteStatus) {

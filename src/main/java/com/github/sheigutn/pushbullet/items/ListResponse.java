@@ -1,6 +1,7 @@
 package com.github.sheigutn.pushbullet.items;
 
 import com.github.sheigutn.pushbullet.items.account.Account;
+import com.github.sheigutn.pushbullet.items.block.Block;
 import com.github.sheigutn.pushbullet.items.channel.OwnChannel;
 import com.github.sheigutn.pushbullet.items.channel.Subscription;
 import com.github.sheigutn.pushbullet.items.chat.Chat;
@@ -23,6 +24,11 @@ public class ListResponse {
      * The list of accounts
      */
     private List<Account> accounts;
+
+    /**
+     * The list of blocked users
+     */
+    private List<Block> blocks;
 
     /**
      * The list of own channels

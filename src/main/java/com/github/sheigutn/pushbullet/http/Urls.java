@@ -1,4 +1,4 @@
-package com.github.sheigutn.pushbullet.util;
+package com.github.sheigutn.pushbullet.http;
 
 public class Urls {
 
@@ -17,4 +17,5 @@ public class Urls {
     public static final String CHANNEL_INFO = "/channel-info";
     public static final String UPLOAD_REQUEST = "/upload-request";
     public static final String EPHEMERALS = "/ephemerals";
+    public static final String BLOCKS = "/blocks";
 }

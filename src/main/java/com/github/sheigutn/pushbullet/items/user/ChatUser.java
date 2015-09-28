@@ -1,5 +1,7 @@
 package com.github.sheigutn.pushbullet.items.user;
 
+import com.github.sheigutn.pushbullet.http.defaults.post.BlockUserRequest;
+import com.github.sheigutn.pushbullet.interfaces.Blockable;
 import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
 import com.github.sheigutn.pushbullet.interfaces.Pushable;
 import com.github.sheigutn.pushbullet.items.PushbulletIdentifiable;
@@ -14,7 +16,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ChatUser extends PushbulletIdentifiable implements Pushable {
+public class ChatUser extends PushbulletIdentifiable implements Pushable, Blockable {
 
     /**
      * The type of this user
@@ -48,5 +50,13 @@ public class ChatUser extends PushbulletIdentifiable implements Pushable {
         push = push.clone();
         push.setReceiver(ReceiverType.EMAIL, getEmail());
         return sendPush(getPushbullet(), push);
+    }
+
+    /**
+     * Used to block this user
+     */
+    @Override
+    public void block() {
+        getPushbullet().executeRequest(new BlockUserRequest(getEmail()));
     }
 }

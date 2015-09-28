@@ -2,7 +2,7 @@ package com.github.sheigutn.pushbullet.http.defaults.post;
 
 import com.github.sheigutn.pushbullet.http.PostRequest;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
-import com.github.sheigutn.pushbullet.util.Urls;
+import com.github.sheigutn.pushbullet.http.Urls;
 import com.google.gson.Gson;
 import lombok.Data;
 import org.apache.http.client.methods.HttpPost;

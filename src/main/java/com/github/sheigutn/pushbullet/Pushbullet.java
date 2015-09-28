@@ -16,6 +16,7 @@ import com.github.sheigutn.pushbullet.interfaces.Pushable;
 import com.github.sheigutn.pushbullet.items.ListResponse;
 import com.github.sheigutn.pushbullet.items.PushbulletContainer;
 import com.github.sheigutn.pushbullet.items.account.Account;
+import com.github.sheigutn.pushbullet.items.block.Block;
 import com.github.sheigutn.pushbullet.items.channel.ChannelInfo;
 import com.github.sheigutn.pushbullet.items.channel.OwnChannel;
 import com.github.sheigutn.pushbullet.items.channel.Subscription;
@@ -30,6 +31,7 @@ import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.push.sendable.defaults.*;
 import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
 import com.github.sheigutn.pushbullet.items.push.sent.defaults.*;
+import com.github.sheigutn.pushbullet.items.user.BlockedUser;
 import com.github.sheigutn.pushbullet.items.user.ChatUser;
 import com.github.sheigutn.pushbullet.items.user.Contact;
 import com.github.sheigutn.pushbullet.items.user.CurrentUser;
@@ -210,6 +212,29 @@ public class Pushbullet implements Pushable {
     }
 
     /**
+     * Get all blocked users
+     * @return The list of blocked users
+     */
+    public List<Block> getBlocks() {
+        return ListUtil.fullList(this, new ListBlocksRequest(), ListResponse::getBlocks);
+    }
+
+    /**
+     * Get a block with the specified block identity or username / email / identity
+     *
+     * @param blockIdentityOrUserNameEmailOrIdentity The block identity or username / email / identity
+     * @return The corresponding chat
+     */
+    public Block getBlock(String blockIdentityOrUserNameEmailOrIdentity) {
+        List<Block> blocks = getBlocks();
+        Block block = FunctionUtil.getFirstWithCondition(blocks, blockIdentityOrUserNameEmailOrIdentity, Block::getIdentity);
+        if(block == null) {
+            return FunctionUtil.getFirstWithFunctionWithCondition(blocks, Block::getUser, blockIdentityOrUserNameEmailOrIdentity, BlockedUser::getName, BlockedUser::getIdentity, BlockedUser::getEmail);
+        }
+        return block;
+    }
+
+    /**
      * Returns channel information for the channel with the specified tag
      * @param tag The specified tag
      * @return A {@link ChannelInfo} Object
@@ -339,7 +364,6 @@ public class Pushbullet implements Pushable {
         }
         return channel;
     }
-
 
     /**
      * Create a new chat with the specified email
@@ -502,7 +526,7 @@ public class Pushbullet implements Pushable {
     }
 
     /**
-     * Get a channel with the specified chat identity or username / email / identity
+     * Get a chat with the specified chat identity or username / email / identity
      *
      * @param chatIdentityUserNameEmailOrIdentity The chat identity or username / email / identity
      * @return The corresponding chat

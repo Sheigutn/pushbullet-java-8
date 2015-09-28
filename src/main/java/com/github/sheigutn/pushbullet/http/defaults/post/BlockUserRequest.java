@@ -2,20 +2,20 @@ package com.github.sheigutn.pushbullet.http.defaults.post;
 
 import com.github.sheigutn.pushbullet.http.PostRequest;
 import com.github.sheigutn.pushbullet.http.Urls;
-import com.github.sheigutn.pushbullet.items.user.CurrentUser;
+import com.github.sheigutn.pushbullet.items.block.Block;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import lombok.Data;
 import org.apache.http.client.methods.HttpPost;
 
-@Data
-public class UpdatePreferencesRequest extends PostRequest<CurrentUser> {
+/**
+ * @author Flo
+ */
+public class BlockUserRequest extends PostRequest<Block> {
 
-    private JsonObject preferences;
+    private String email;
 
-    public UpdatePreferencesRequest(JsonObject preferences) {
-        super(Urls.CURRENT_USER);
-        this.preferences = preferences;
+    public BlockUserRequest(String userEmail) {
+        super(Urls.BLOCKS);
+        this.email = userEmail;
     }
 
     @Override
