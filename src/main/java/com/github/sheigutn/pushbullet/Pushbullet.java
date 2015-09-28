@@ -1,6 +1,7 @@
 package com.github.sheigutn.pushbullet;
 
 import com.github.sheigutn.pushbullet.cryptography.Encryption;
+import com.github.sheigutn.pushbullet.cryptography.EphemeralEncryptionHandler;
 import com.github.sheigutn.pushbullet.ephemeral.*;
 import com.github.sheigutn.pushbullet.exception.PushbulletApiError;
 import com.github.sheigutn.pushbullet.exception.PushbulletApiException;
@@ -75,7 +76,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter
-@RequiredArgsConstructor
 public class Pushbullet implements Pushable {
 
     /**
@@ -86,7 +86,6 @@ public class Pushbullet implements Pushable {
     /**
      * Access token required for API requests
      */
-    @NonNull
     private final String accessToken;
 
     /**
@@ -120,7 +119,13 @@ public class Pushbullet implements Pushable {
                             .registerSubtype(DismissalEphemeral.class, "dismissal")
                             .registerSubtype(NotificationEphemeral.class, "mirror")
                             .registerSubtype(SmsReplyEphemeral.class, "message_extension_reply"))
+            .registerTypeAdapterFactory(new EphemeralEncryptionHandler(this))
             .create();
+
+    /**
+     * Encryption object for e2e-encryption
+     */
+    private Encryption encryption;
 
     /**
      * ExecutorService for asynchronous methods
@@ -152,6 +157,24 @@ public class Pushbullet implements Pushable {
      */
     @Getter(AccessLevel.NONE)
     private Number newestModifiedAfter = 0;
+
+    /**
+     * Creates a new {@link Pushbullet} instance
+     * @param accessToken The access token to use
+     */
+    public Pushbullet(@NonNull String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    /**
+     * Creates a new {@link Pushbullet} instance that can also encrypt and decrypt ephemerals
+     * @param accessToken The access token to use
+     * @param password    The password for the e2e-encryption
+     */
+    public Pushbullet(@NonNull String accessToken, String password) {
+        this(accessToken);
+        this.encryption = new Encryption(this, password);
+    }
 
     /**
      * @return The user that has the API token
