@@ -48,7 +48,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import io.gsonfire.GsonFireBuilder;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -86,12 +89,32 @@ public class Pushbullet implements Pushable {
     private static final String API_BASE_URL = "https://api.pushbullet.com/v2";
 
     /**
+     * Header name for the access token
+     */
+    private static final String ACCESS_TOKEN_HEADER = "Access-Token";
+
+    /**
+     * Header name for the API limit
+     */
+    private static final String RATELIMIT_LIMIT_HEADER = "X-Ratelimit-Limit";
+
+    /**
+     * Header name for the remaining API operations
+     */
+    private static final String RATELIMIT_REMAINING_HEADER = "X-Ratelimit-Remaining";
+
+    /**
+     * Header name for the API operation reset timestamp
+     */
+    private static final String RATELIMIT_RESET_HEADER = "X-Ratelimit-Reset";
+
+    /**
      * Access token required for API requests
      */
     private final String accessToken;
 
     /**
-     * Gson instance for usage with json bodies
+     * Gson instance to use for serializing and deserializing
      */
     private final Gson gson = new GsonFireBuilder()
             .registerPostProcessor(PushbulletContainer.class, new PushbulletContainerPostProcessor(this))
@@ -125,9 +148,9 @@ public class Pushbullet implements Pushable {
             .create();
 
     /**
-     * Encryption object for e2e-encryption
+     * Encryption object for end-to-end encryption
      */
-    private Encryption encryption;
+    private volatile Encryption encryption;
 
     /**
      * ExecutorService for asynchronous methods
@@ -175,10 +198,11 @@ public class Pushbullet implements Pushable {
      */
     public Pushbullet(@NonNull String accessToken, String password) {
         this(accessToken);
-        this.encryption = new Encryption(this, password);
+        this.updatePassword(password);
     }
 
     /**
+     * Get the current user
      * @return The user that has the API token
      */
     public CurrentUser getCurrentUser() {
@@ -456,10 +480,10 @@ public class Pushbullet implements Pushable {
     }
 
     /**
-     * Get pushes by a subclass of {@link SentPush}
+     * Get all pushes of a specific class
      * @param clazz The subclass of {@link SentPush}
      * @param <T>   The type of the class
-     * @return A list of pushes
+     * @return A list of these pushes
      */
     @SuppressWarnings("unchecked")
     public <T extends SentPush> List<T> getAllPushes(Class<T> clazz) {
@@ -477,6 +501,20 @@ public class Pushbullet implements Pushable {
         List<SentPush> pushes = ListUtil.fullList(this, new ListPushesRequest().setModifiedAfter(newestModifiedAfter), ListResponse::getPushes);
         handleNewest(pushes);
         return pushes;
+    }
+
+    /**
+     * Get new pushes of a specific class
+     * @param clazz The subclass of {@link SentPush}
+     * @param <T>   The type of the class
+     * @return A list of these pushes
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends SentPush> List<T> getNewPush(Class<T> clazz) {
+        return getNewPushes().stream()
+                .filter(push -> clazz.isAssignableFrom(push.getClass()))
+                .map(push -> (T) push)
+                .collect(Collectors.toList());
     }
 
     private void handleNewest(List<SentPush> pushes) {
@@ -673,6 +711,14 @@ public class Pushbullet implements Pushable {
     }
 
     /**
+     * Update the encryption password
+     * @param password The new password
+     */
+    public void updatePassword(String password) {
+        encryption = new Encryption(this, password);
+    }
+
+    /**
      * Upload a file to the pushbullet server
      * @param file The file to upload
      * @return An {@link UploadFile} object containing the file url
@@ -728,7 +774,7 @@ public class Pushbullet implements Pushable {
         Constructor<? extends HttpUriRequest> httpMessageConstructor = httpUriRequestClass.getConstructor(URI.class);
         URI uri = builder.build();
         HttpUriRequest httpMessage = httpMessageConstructor.newInstance(uri);
-        httpMessage.addHeader("Access-Token", accessToken);
+        httpMessage.addHeader(ACCESS_TOKEN_HEADER, accessToken);
         //Add body
         if(apiRequest instanceof EntityEnclosingRequest) {
             httpMessage.addHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
@@ -739,9 +785,9 @@ public class Pushbullet implements Pushable {
         //Execute request
         try(CloseableHttpClient client = HttpClients.createDefault(); CloseableHttpResponse response = client.execute(httpMessage)) {
             String responseString = EntityUtils.toString(response.getEntity());
-            this.rateLimit = Integer.valueOf(HttpUtil.getHeaderValue(response, "X-Ratelimit-Limit", "0"));
-            this.rateRemaining = Integer.valueOf(HttpUtil.getHeaderValue(response, "X-Ratelimit-Remaining", "0"));
-            this.resetTimestamp = Long.valueOf(HttpUtil.getHeaderValue(response, "X-Ratelimit-Reset", "0"));
+            this.rateLimit = Integer.valueOf(HttpUtil.getHeaderValue(response, RATELIMIT_LIMIT_HEADER, "0"));
+            this.rateRemaining = Integer.valueOf(HttpUtil.getHeaderValue(response, RATELIMIT_REMAINING_HEADER, "0"));
+            this.resetTimestamp = Long.valueOf(HttpUtil.getHeaderValue(response, RATELIMIT_RESET_HEADER, "0"));
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 throw new PushbulletApiException(gson.fromJson(extractError(responseString), PushbulletApiError.class));
             }
