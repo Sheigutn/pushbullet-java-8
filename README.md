@@ -14,7 +14,7 @@ This library can be used with Maven, it's located in the central repository:
 <dependency>
     <groupId>com.github.sheigutn</groupId>
     <artifactId>pushbullet-java-8</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
