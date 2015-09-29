@@ -510,7 +510,7 @@ public class Pushbullet implements Pushable {
      * @return A list of these pushes
      */
     @SuppressWarnings("unchecked")
-    public <T extends SentPush> List<T> getNewPush(Class<T> clazz) {
+    public <T extends SentPush> List<T> getNewPushes(Class<T> clazz) {
         return getNewPushes().stream()
                 .filter(push -> clazz.isAssignableFrom(push.getClass()))
                 .map(push -> (T) push)
