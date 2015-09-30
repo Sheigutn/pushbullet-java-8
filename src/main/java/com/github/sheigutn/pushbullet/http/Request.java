@@ -30,8 +30,8 @@ public abstract class Request<TResult, TMessage extends HttpUriRequest> {
     }
 
     protected void setJsonBody(String jsonBody, TMessage message) {
-        StringEntity entity = new StringEntity(jsonBody, ContentType.APPLICATION_JSON);
         if(!(message instanceof HttpEntityEnclosingRequest)) return;
+        StringEntity entity = new StringEntity(jsonBody, ContentType.APPLICATION_JSON);
         HttpEntityEnclosingRequest request = ((HttpEntityEnclosingRequest) message);
         request.setEntity(entity);
     }

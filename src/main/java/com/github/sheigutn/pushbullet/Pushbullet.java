@@ -181,7 +181,7 @@ public class Pushbullet implements Pushable {
      * Used for {@link #getNewPushes()}
      */
     @Getter(AccessLevel.NONE)
-    private Number newestModifiedAfter = 0;
+    private double newestModifiedAfter = 0;
 
     /**
      * Creates a new {@link Pushbullet} instance
@@ -521,7 +521,7 @@ public class Pushbullet implements Pushable {
         if(pushes.size() > 0) {
             SentPush push = pushes.get(0);
             double modified = push.getModified().doubleValue();
-            if(modified > newestModifiedAfter.doubleValue()) {
+            if(modified > newestModifiedAfter) {
                 newestModifiedAfter = modified;
             }
         }
@@ -725,6 +725,8 @@ public class Pushbullet implements Pushable {
      */
     public UploadFile uploadFile(File file) {
         if(!file.exists()) throw new IllegalArgumentException("File not found.");
+        long maxFileSize = getCurrentUser().getMaxUploadSize();
+        if(file.length() > maxFileSize) throw new IllegalArgumentException("File is too big, max file size: " + maxFileSize);
         RequestFileUploadRequest fileUploadRequest = new RequestFileUploadRequest(file);
         UploadFile result = executeRequest(fileUploadRequest);
         AwsAuthData data = result.getData();

@@ -28,7 +28,7 @@ public class CurrentUser extends User {
      * The maximum allowed upload size for files allowed to this user
      */
     @SerializedName("max_upload_size")
-    private Number maxUploadSize;
+    private long maxUploadSize;
 
     /**
      * Used to update the preferences of this user
