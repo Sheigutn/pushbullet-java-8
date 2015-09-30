@@ -8,6 +8,8 @@ Javadoc is located [here](http://sheigutn.github.io/pushbullet-java-8).
 
 # Maven
 
+[![Dependency Status](https://www.versioneye.com/user/projects/560c145b5a262f001e00081d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/560c145b5a262f001e00081d) [![Build Status](https://travis-ci.org/Sheigutn/pushbullet-java-8.svg?branch=master)](https://travis-ci.org/Sheigutn/pushbullet-java-8)
+
 This library can be used with Maven, it's located in the central repository:
 
 ```xml
