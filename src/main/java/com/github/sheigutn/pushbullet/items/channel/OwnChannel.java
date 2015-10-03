@@ -61,7 +61,7 @@ public class OwnChannel extends PushbulletObject implements Deletable {
      * @param url   The link of the push
      */
     public void pushLink(String title, String body, String url) {
-        push(new LinkPush(title, body, url));
+        push(new SendableLinkPush(title, body, url));
     }
 
     /**
@@ -71,7 +71,7 @@ public class OwnChannel extends PushbulletObject implements Deletable {
      */
     @Deprecated
     public void pushAddress(String name, String address) {
-        push(new AddressPush(name, address));
+        push(new SendableAddressPush(name, address));
     }
 
     /**
@@ -80,7 +80,7 @@ public class OwnChannel extends PushbulletObject implements Deletable {
      * @param body  The body of the note
      */
     public void pushNote(String title, String body) {
-        push(new NotePush(title, body));
+        push(new SendableNotePush(title, body));
     }
 
     /**
@@ -90,7 +90,7 @@ public class OwnChannel extends PushbulletObject implements Deletable {
      */
     @Deprecated
     public void pushList(String title, List<String> items) {
-        push(new ListPush(title, items));
+        push(new SendableListPush(title, items));
     }
 
     /**
@@ -99,7 +99,7 @@ public class OwnChannel extends PushbulletObject implements Deletable {
      * @param file The file of this push
      */
     public void pushFile(String body, UploadFile file) {
-        push(new FilePush(body, file));
+        push(new SendableFilePush(body, file));
     }
 
     @Override

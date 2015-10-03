@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @ToString(callSuper = true)
 @Deprecated
-public class ListPush extends SendablePush {
+public class SendableListPush extends SendablePush {
 
     /**
      * The title for this push
@@ -24,7 +24,7 @@ public class ListPush extends SendablePush {
      */
     private List<String> items;
 
-    public ListPush() {
+    public SendableListPush() {
         super(PushType.LIST);
     }
 
@@ -33,7 +33,7 @@ public class ListPush extends SendablePush {
      * @param title The title for this push
      * @param items The items for this push
      */
-    public ListPush(String title, List<String> items) {
+    public SendableListPush(String title, List<String> items) {
         this();
         this.title = title;
         this.items = items;

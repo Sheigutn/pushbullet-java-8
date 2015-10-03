@@ -36,7 +36,7 @@ public interface Pushable {
      * @return An instance of the sent push
      */
     default Push pushLink(String title, String body, String url) {
-        return push(new LinkPush(title, body, url));
+        return push(new SendableLinkPush(title, body, url));
     }
 
     /**
@@ -47,7 +47,7 @@ public interface Pushable {
      */
     @Deprecated
     default Push pushAddress(String name, String address) {
-        return push(new AddressPush(name, address));
+        return push(new SendableAddressPush(name, address));
     }
 
     /**
@@ -57,7 +57,7 @@ public interface Pushable {
      * @return An instance of the sent push
      */
     default Push pushNote(String title, String body) {
-        return push(new NotePush(title, body));
+        return push(new SendableNotePush(title, body));
     }
 
     /**
@@ -68,7 +68,7 @@ public interface Pushable {
      */
     @Deprecated
     default Push pushList(String title, List<String> items) {
-        return push(new ListPush(title, items));
+        return push(new SendableListPush(title, items));
     }
 
     /**
@@ -78,6 +78,6 @@ public interface Pushable {
      * @return An instance of the sent push
      */
     default Push pushFile(String body, UploadFile file) {
-        return push(new FilePush(body, file));
+        return push(new SendableFilePush(body, file));
     }
 }

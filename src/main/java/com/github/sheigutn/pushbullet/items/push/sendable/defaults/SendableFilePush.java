@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Data
 @ToString(callSuper = true)
-public class FilePush extends SendablePush {
+public class SendableFilePush extends SendablePush {
 
     /**
      * The body for this push
@@ -36,7 +36,7 @@ public class FilePush extends SendablePush {
     @SerializedName("file_url")
     private String fileUrl;
 
-    public FilePush() {
+    public SendableFilePush() {
         super(PushType.FILE);
     }
 
@@ -45,7 +45,7 @@ public class FilePush extends SendablePush {
      * @param body The body for this messagse
      * @param file The file to send
      */
-    public FilePush(String body, UploadFile file) {
+    public SendableFilePush(String body, UploadFile file) {
         this();
         this.body = body;
         setFile(file);
@@ -55,7 +55,7 @@ public class FilePush extends SendablePush {
      * @param file The file to send
      * @return The object this method was executed on
      */
-    public FilePush setFile(UploadFile file) {
+    public SendableFilePush setFile(UploadFile file) {
         this.fileType = file.getFileType();
         this.fileName = file.getFileName();
         this.fileUrl = file.getFileUrl();

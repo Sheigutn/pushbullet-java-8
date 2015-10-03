@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Data
 @ToString(callSuper = true)
-public class NotePush extends SendablePush {
+public class SendableNotePush extends SendablePush {
 
     /**
      * The title for this push
@@ -21,7 +21,7 @@ public class NotePush extends SendablePush {
      */
     private String body;
 
-    public NotePush() {
+    public SendableNotePush() {
         super(PushType.NOTE);
     }
 
@@ -30,7 +30,7 @@ public class NotePush extends SendablePush {
      * @param title The title for this push
      * @param body  The body for this push
      */
-    public NotePush(String title, String body) {
+    public SendableNotePush(String title, String body) {
         this();
         this.title = title;
         this.body = body;

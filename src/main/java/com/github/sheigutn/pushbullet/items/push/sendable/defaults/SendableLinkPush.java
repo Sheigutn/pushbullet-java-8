@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Data
 @ToString(callSuper = true)
-public class LinkPush extends SendablePush {
+public class SendableLinkPush extends SendablePush {
 
     /**
      * The title of this push
@@ -23,11 +23,11 @@ public class LinkPush extends SendablePush {
 
     private String url;
 
-    public LinkPush() {
+    public SendableLinkPush() {
         super(PushType.LINK);
     }
 
-    public LinkPush(String title, String body, String url) {
+    public SendableLinkPush(String title, String body, String url) {
         this();
         this.title = title;
         this.body = body;

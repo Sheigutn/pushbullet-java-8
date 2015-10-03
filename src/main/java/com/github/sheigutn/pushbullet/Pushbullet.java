@@ -28,6 +28,7 @@ import com.github.sheigutn.pushbullet.items.grant.Grant;
 import com.github.sheigutn.pushbullet.items.grant.GrantClient;
 import com.github.sheigutn.pushbullet.items.oauth.OAuthClient;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
+import com.github.sheigutn.pushbullet.items.push.sendable.defaults.*;
 import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.github.sheigutn.pushbullet.items.push.sent.defaults.AddressPush;
 import com.github.sheigutn.pushbullet.items.push.sent.defaults.FilePush;
@@ -136,11 +137,11 @@ public class Pushbullet implements Pushable {
                             .registerSubtype(NotePush.class, "note"))
             .registerTypeAdapterFactory(
                     RuntimeTypeAdapterFactory.of(SendablePush.class)
-                            .registerSubtype(com.github.sheigutn.pushbullet.items.push.sendable.defaults.ListPush.class, "list")
-                            .registerSubtype(com.github.sheigutn.pushbullet.items.push.sendable.defaults.LinkPush.class, "link")
-                            .registerSubtype(com.github.sheigutn.pushbullet.items.push.sendable.defaults.FilePush.class, "file")
-                            .registerSubtype(com.github.sheigutn.pushbullet.items.push.sendable.defaults.AddressPush.class, "address")
-                            .registerSubtype(com.github.sheigutn.pushbullet.items.push.sendable.defaults.NotePush.class, "note"))
+                            .registerSubtype(SendableListPush.class, "list")
+                            .registerSubtype(SendableLinkPush.class, "link")
+                            .registerSubtype(SendableFilePush.class, "file")
+                            .registerSubtype(SendableAddressPush.class, "address")
+                            .registerSubtype(SendableNotePush.class, "note"))
             .registerTypeAdapterFactory(
                     RuntimeTypeAdapterFactory.of(Ephemeral.class)
                             .registerSubtype(ClipEphemeral.class, "clip")

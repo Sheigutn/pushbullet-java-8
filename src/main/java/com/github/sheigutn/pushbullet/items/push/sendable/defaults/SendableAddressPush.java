@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Data
 @ToString(callSuper = true)
 @Deprecated
-public class AddressPush extends SendablePush {
+public class SendableAddressPush extends SendablePush {
 
     /**
      * The name of the address
@@ -22,11 +22,11 @@ public class AddressPush extends SendablePush {
      */
     private String address;
 
-    public AddressPush() {
+    public SendableAddressPush() {
         super(PushType.ADDRESS);
     }
 
-    public AddressPush(String name, String address) {
+    public SendableAddressPush(String name, String address) {
         this();
         this.name = name;
         this.address = address;
