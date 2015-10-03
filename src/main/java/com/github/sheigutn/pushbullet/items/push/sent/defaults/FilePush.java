@@ -1,6 +1,6 @@
 package com.github.sheigutn.pushbullet.items.push.sent.defaults;
 
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.github.sheigutn.pushbullet.items.push.PushType;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
@@ -8,9 +8,9 @@ import lombok.ToString;
 
 @Getter
 @ToString(callSuper = true)
-public class SentFilePush extends SentPush {
+public class FilePush extends Push {
 
-    private SentFilePush() {
+    private FilePush() {
         setType(PushType.FILE);
     }
 

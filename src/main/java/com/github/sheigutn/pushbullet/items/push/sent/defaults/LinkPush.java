@@ -1,6 +1,6 @@
 package com.github.sheigutn.pushbullet.items.push.sent.defaults;
 
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.github.sheigutn.pushbullet.items.push.PushType;
 import lombok.Data;
 import lombok.ToString;
@@ -9,9 +9,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Data
 @ToString(callSuper = true)
-public class SentLinkPush extends SentPush {
+public class LinkPush extends Push {
 
-    private SentLinkPush() {
+    private LinkPush() {
         setType(PushType.LINK);
     }
 

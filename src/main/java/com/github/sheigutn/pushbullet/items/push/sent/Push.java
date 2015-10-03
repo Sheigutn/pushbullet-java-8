@@ -15,7 +15,7 @@ import java.util.List;
 @Setter(AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class SentPush extends PushbulletObject implements Deletable, Dismissable {
+public abstract class Push extends PushbulletObject implements Deletable, Dismissable {
 
     /**
      * The type of the push

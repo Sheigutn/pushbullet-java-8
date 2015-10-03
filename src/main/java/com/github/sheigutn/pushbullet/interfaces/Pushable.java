@@ -5,7 +5,7 @@ import com.github.sheigutn.pushbullet.http.defaults.post.SendPushRequest;
 import com.github.sheigutn.pushbullet.items.file.UploadFile;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.push.sendable.defaults.*;
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface Pushable {
      * @param push The push to send to
      * @return An instance of the sent push
      */
-    SentPush push(SendablePush push);
+    Push push(SendablePush push);
 
     /**
      * Used to send a push to this object
@@ -24,7 +24,7 @@ public interface Pushable {
      * @param push       The push to send
      * @return An instance of the sent push
      */
-    default SentPush sendPush(Pushbullet pushbullet, SendablePush push) {
+    default Push sendPush(Pushbullet pushbullet, SendablePush push) {
         return pushbullet.executeRequest(new SendPushRequest(push));
     }
 
@@ -35,7 +35,7 @@ public interface Pushable {
      * @param url   The link of the push
      * @return An instance of the sent push
      */
-    default SentPush pushLink(String title, String body, String url) {
+    default Push pushLink(String title, String body, String url) {
         return push(new LinkPush(title, body, url));
     }
 
@@ -46,7 +46,7 @@ public interface Pushable {
      * @return An instance of the sent push
      */
     @Deprecated
-    default SentPush pushAddress(String name, String address) {
+    default Push pushAddress(String name, String address) {
         return push(new AddressPush(name, address));
     }
 
@@ -56,7 +56,7 @@ public interface Pushable {
      * @param body  The body of the note
      * @return An instance of the sent push
      */
-    default SentPush pushNote(String title, String body) {
+    default Push pushNote(String title, String body) {
         return push(new NotePush(title, body));
     }
 
@@ -67,7 +67,7 @@ public interface Pushable {
      * @return An instance of the sent push
      */
     @Deprecated
-    default SentPush pushList(String title, List<String> items) {
+    default Push pushList(String title, List<String> items) {
         return push(new ListPush(title, items));
     }
 
@@ -77,7 +77,7 @@ public interface Pushable {
      * @param file The file of this push
      * @return An instance of the sent push
      */
-    default SentPush pushFile(String body, UploadFile file) {
+    default Push pushFile(String body, UploadFile file) {
         return push(new FilePush(body, file));
     }
 }

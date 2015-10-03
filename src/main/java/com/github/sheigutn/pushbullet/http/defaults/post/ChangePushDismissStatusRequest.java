@@ -1,13 +1,13 @@
 package com.github.sheigutn.pushbullet.http.defaults.post;
 
 import com.github.sheigutn.pushbullet.http.PostRequest;
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.github.sheigutn.pushbullet.http.Urls;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import org.apache.http.client.methods.HttpPost;
 
-public class ChangePushDismissStatusRequest extends PostRequest<SentPush> {
+public class ChangePushDismissStatusRequest extends PostRequest<Push> {
 
     @SerializedName("dismissed")
     private boolean dismiss;

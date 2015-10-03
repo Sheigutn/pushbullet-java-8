@@ -10,7 +10,7 @@ import com.github.sheigutn.pushbullet.interfaces.Deletable;
 import com.github.sheigutn.pushbullet.interfaces.Pushable;
 import com.github.sheigutn.pushbullet.items.push.sendable.ReceiverType;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -84,7 +84,7 @@ public class Device extends PushbulletObject implements Deletable, Pushable, Sms
      */
     private String model;
 
-    public SentPush push(SendablePush push) {
+    public Push push(SendablePush push) {
         if(!isPushable()) return null;
         push = push.clone();
         push.setReceiver(ReceiverType.DEVICE, getIdentity());
@@ -107,7 +107,7 @@ public class Device extends PushbulletObject implements Deletable, Pushable, Sms
      * Returns all pushes that this device has received
      * @return A list of pushes that this device has received
      */
-    public List<SentPush> getReceivedPushes() {
+    public List<Push> getReceivedPushes() {
         return getPushbullet().getAllPushes().stream().filter(push -> getIdentity().equals(push.getTargetDeviceIdentity())).collect(Collectors.toList());
     }
 

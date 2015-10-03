@@ -1,15 +1,15 @@
 package com.github.sheigutn.pushbullet.items.push.sent.defaults;
 
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.github.sheigutn.pushbullet.items.push.PushType;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString(callSuper = true)
-public class SentNotePush extends SentPush {
+public class NotePush extends Push {
 
-    private SentNotePush() {
+    private NotePush() {
         setType(PushType.NOTE);
     }
 

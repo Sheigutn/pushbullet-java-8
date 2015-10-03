@@ -28,9 +28,12 @@ import com.github.sheigutn.pushbullet.items.grant.Grant;
 import com.github.sheigutn.pushbullet.items.grant.GrantClient;
 import com.github.sheigutn.pushbullet.items.oauth.OAuthClient;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
-import com.github.sheigutn.pushbullet.items.push.sendable.defaults.*;
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
-import com.github.sheigutn.pushbullet.items.push.sent.defaults.*;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
+import com.github.sheigutn.pushbullet.items.push.sent.defaults.AddressPush;
+import com.github.sheigutn.pushbullet.items.push.sent.defaults.FilePush;
+import com.github.sheigutn.pushbullet.items.push.sent.defaults.LinkPush;
+import com.github.sheigutn.pushbullet.items.push.sent.defaults.ListPush;
+import com.github.sheigutn.pushbullet.items.push.sent.defaults.NotePush;
 import com.github.sheigutn.pushbullet.items.user.BlockedUser;
 import com.github.sheigutn.pushbullet.items.user.ChatUser;
 import com.github.sheigutn.pushbullet.items.user.Contact;
@@ -125,19 +128,19 @@ public class Pushbullet implements Pushable {
                             .registerSubtype(TickleStreamMessage.class, "tickle")
                             .registerSubtype(PushStreamMessage.class, "push"))
             .registerTypeAdapterFactory(
-                    RuntimeTypeAdapterFactory.of(SentPush.class)
-                            .registerSubtype(SentListPush.class, "list")
-                            .registerSubtype(SentLinkPush.class, "link")
-                            .registerSubtype(SentFilePush.class, "file")
-                            .registerSubtype(SentAddressPush.class, "address")
-                            .registerSubtype(SentNotePush.class, "note"))
-            .registerTypeAdapterFactory(
-                    RuntimeTypeAdapterFactory.of(SendablePush.class)
+                    RuntimeTypeAdapterFactory.of(Push.class)
                             .registerSubtype(ListPush.class, "list")
                             .registerSubtype(LinkPush.class, "link")
                             .registerSubtype(FilePush.class, "file")
                             .registerSubtype(AddressPush.class, "address")
                             .registerSubtype(NotePush.class, "note"))
+            .registerTypeAdapterFactory(
+                    RuntimeTypeAdapterFactory.of(SendablePush.class)
+                            .registerSubtype(com.github.sheigutn.pushbullet.items.push.sendable.defaults.ListPush.class, "list")
+                            .registerSubtype(com.github.sheigutn.pushbullet.items.push.sendable.defaults.LinkPush.class, "link")
+                            .registerSubtype(com.github.sheigutn.pushbullet.items.push.sendable.defaults.FilePush.class, "file")
+                            .registerSubtype(com.github.sheigutn.pushbullet.items.push.sendable.defaults.AddressPush.class, "address")
+                            .registerSubtype(com.github.sheigutn.pushbullet.items.push.sendable.defaults.NotePush.class, "note"))
             .registerTypeAdapterFactory(
                     RuntimeTypeAdapterFactory.of(Ephemeral.class)
                             .registerSubtype(ClipEphemeral.class, "clip")
@@ -421,8 +424,8 @@ public class Pushbullet implements Pushable {
      *
      * @return A list of pushes that included a file
      */
-    public List<SentFilePush> getAllFilePushes() {
-        return getAllPushes(SentFilePush.class);
+    public List<FilePush> getAllFilePushes() {
+        return getAllPushes(FilePush.class);
     }
 
     /**
@@ -430,8 +433,8 @@ public class Pushbullet implements Pushable {
      *
      * @return A list of pushes that included a note
      */
-    public List<SentNotePush> getAllNotePushes() {
-        return getAllPushes(SentNotePush.class);
+    public List<NotePush> getAllNotePushes() {
+        return getAllPushes(NotePush.class);
     }
 
     /**
@@ -439,8 +442,8 @@ public class Pushbullet implements Pushable {
      *
      * @return A list of pushes that included a link
      */
-    public List<SentLinkPush> getAllLinkPushes() {
-        return getAllPushes(SentLinkPush.class);
+    public List<LinkPush> getAllLinkPushes() {
+        return getAllPushes(LinkPush.class);
     }
 
     /**
@@ -449,8 +452,8 @@ public class Pushbullet implements Pushable {
      * @return A list of pushes that included an address
      */
     @Deprecated
-    public List<SentAddressPush> getAllAddressPushes() {
-        return getAllPushes(SentAddressPush.class);
+    public List<AddressPush> getAllAddressPushes() {
+        return getAllPushes(AddressPush.class);
     }
 
     /**
@@ -459,14 +462,14 @@ public class Pushbullet implements Pushable {
      * @return A list of pushes that included a list
      */
     @Deprecated
-    public List<SentListPush> getAllListPushes() {
-        return getAllPushes(SentListPush.class);
+    public List<ListPush> getAllListPushes() {
+        return getAllPushes(ListPush.class);
     }
 
     /**
      * @return The list of incoming or outgoing pushes
      */
-    public List<SentPush> getAllPushes() {
+    public List<Push> getAllPushes() {
         return ListUtil.fullList(this, new ListPushesRequest(), ListResponse::getPushes);
     }
 
@@ -475,18 +478,18 @@ public class Pushbullet implements Pushable {
      * @param pushIdentity The identity of the push
      * @return The push with this identity
      */
-    public SentPush getPush(String pushIdentity) {
-        return FunctionUtil.getFirstWithCondition(getAllPushes(), pushIdentity, SentPush::getIdentity);
+    public Push getPush(String pushIdentity) {
+        return FunctionUtil.getFirstWithCondition(getAllPushes(), pushIdentity, Push::getIdentity);
     }
 
     /**
      * Get all pushes of a specific class
-     * @param clazz The subclass of {@link SentPush}
+     * @param clazz The subclass of {@link Push}
      * @param <T>   The type of the class
      * @return A list of these pushes
      */
     @SuppressWarnings("unchecked")
-    public <T extends SentPush> List<T> getAllPushes(Class<T> clazz) {
+    public <T extends Push> List<T> getAllPushes(Class<T> clazz) {
         return getAllPushes().stream()
                 .filter(push -> clazz.isAssignableFrom(push.getClass()))
                 .map(push -> (T) push)
@@ -497,29 +500,29 @@ public class Pushbullet implements Pushable {
      * Used to get newer pushes since the last call of or {@link #getNewPushes()}
      * @return A list of pushes
      */
-    public List<SentPush> getNewPushes() {
-        List<SentPush> pushes = ListUtil.fullList(this, new ListPushesRequest().setModifiedAfter(newestModifiedAfter), ListResponse::getPushes);
+    public List<Push> getNewPushes() {
+        List<Push> pushes = ListUtil.fullList(this, new ListPushesRequest().setModifiedAfter(newestModifiedAfter), ListResponse::getPushes);
         handleNewest(pushes);
         return pushes;
     }
 
     /**
      * Get new pushes of a specific class
-     * @param clazz The subclass of {@link SentPush}
+     * @param clazz The subclass of {@link Push}
      * @param <T>   The type of the class
      * @return A list of these pushes
      */
     @SuppressWarnings("unchecked")
-    public <T extends SentPush> List<T> getNewPushes(Class<T> clazz) {
+    public <T extends Push> List<T> getNewPushes(Class<T> clazz) {
         return getNewPushes().stream()
                 .filter(push -> clazz.isAssignableFrom(push.getClass()))
                 .map(push -> (T) push)
                 .collect(Collectors.toList());
     }
 
-    private void handleNewest(List<SentPush> pushes) {
+    private void handleNewest(List<Push> pushes) {
         if(pushes.size() > 0) {
-            SentPush push = pushes.get(0);
+            Push push = pushes.get(0);
             double modified = push.getModified().doubleValue();
             if(modified > newestModifiedAfter) {
                 newestModifiedAfter = modified;
@@ -677,7 +680,7 @@ public class Pushbullet implements Pushable {
      * @param push The push to send
      * @return A push object that represents the sent push
      */
-    public SentPush pushToAllDevices(SendablePush push) {
+    public Push pushToAllDevices(SendablePush push) {
         push = push.clone();
         push.clearReceivers();
         return executeRequest(new SendPushRequest(push));
@@ -686,10 +689,10 @@ public class Pushbullet implements Pushable {
     /**
      * Method needed for {@link Pushable} interface, wraps {@link #pushToAllDevices(SendablePush)}
      * @param push The push to send to all devices
-     * @return A {@link SentPush} object
+     * @return A {@link Push} object
      */
     @Override
-    public SentPush push(SendablePush push) {
+    public Push push(SendablePush push) {
         return pushToAllDevices(push);
     }
 

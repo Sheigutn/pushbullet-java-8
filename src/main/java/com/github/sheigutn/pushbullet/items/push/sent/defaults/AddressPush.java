@@ -1,16 +1,16 @@
 package com.github.sheigutn.pushbullet.items.push.sent.defaults;
 
 import com.github.sheigutn.pushbullet.items.push.PushType;
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString(callSuper = true)
 @Deprecated
-public class SentAddressPush extends SentPush {
+public class AddressPush extends Push {
 
-    private SentAddressPush() {
+    private AddressPush() {
         setType(PushType.ADDRESS);
     }
 

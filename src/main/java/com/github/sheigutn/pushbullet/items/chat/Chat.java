@@ -4,7 +4,7 @@ import com.github.sheigutn.pushbullet.http.defaults.delete.DeleteSpecificChatReq
 import com.github.sheigutn.pushbullet.http.defaults.post.BlockUserRequest;
 import com.github.sheigutn.pushbullet.interfaces.Blockable;
 import com.github.sheigutn.pushbullet.items.PushbulletObject;
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.github.sheigutn.pushbullet.http.defaults.post.UpdateChatMuteStatusRequest;
 import com.github.sheigutn.pushbullet.interfaces.Deletable;
 import com.github.sheigutn.pushbullet.interfaces.Mutable;
@@ -63,7 +63,7 @@ public class Chat extends PushbulletObject implements Deletable, Mutable, Pushab
     }
 
     @Override
-    public SentPush push(SendablePush push) {
+    public Push push(SendablePush push) {
         return with.push(push);
     }
 }

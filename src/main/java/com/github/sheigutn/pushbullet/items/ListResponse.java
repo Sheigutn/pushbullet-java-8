@@ -8,7 +8,7 @@ import com.github.sheigutn.pushbullet.items.chat.Chat;
 import com.github.sheigutn.pushbullet.items.device.Device;
 import com.github.sheigutn.pushbullet.items.grant.Grant;
 import com.github.sheigutn.pushbullet.items.oauth.OAuthClient;
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.github.sheigutn.pushbullet.items.user.Contact;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -63,7 +63,7 @@ public class ListResponse {
     /**
      * The list of sent or received pushes
      */
-    private List<SentPush> pushes;
+    private List<Push> pushes;
 
     /**
      * The list of subscriptions

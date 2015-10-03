@@ -3,7 +3,7 @@ package com.github.sheigutn.pushbullet.items.channel;
 import com.github.sheigutn.pushbullet.http.defaults.post.SubscribeToChannelRequest;
 import com.github.sheigutn.pushbullet.interfaces.Subscribable;
 import com.github.sheigutn.pushbullet.items.PushbulletIdentifiable;
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -52,7 +52,7 @@ public class ChannelInfo extends PushbulletIdentifiable implements Subscribable 
      * The recent pushes of this channel
      */
     @SerializedName("recent_pushes")
-    private List<SentPush> recentPushes;
+    private List<Push> recentPushes;
 
     public void subscribe() {
         getPushbullet().executeRequest(new SubscribeToChannelRequest(tag));

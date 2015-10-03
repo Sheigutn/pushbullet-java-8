@@ -6,7 +6,7 @@ import com.github.sheigutn.pushbullet.interfaces.Pushable;
 import com.github.sheigutn.pushbullet.items.PushbulletObject;
 import com.github.sheigutn.pushbullet.items.push.sendable.ReceiverType;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
-import com.github.sheigutn.pushbullet.items.push.sent.SentPush;
+import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -41,7 +41,7 @@ public class User extends PushbulletObject implements Pushable, Blockable {
     private String imageUrl;
 
     @Override
-    public SentPush push(SendablePush push) {
+    public Push push(SendablePush push) {
         if(!isActive()) return null;
         push = push.clone();
         push.setReceiver(ReceiverType.EMAIL, getEmail());
