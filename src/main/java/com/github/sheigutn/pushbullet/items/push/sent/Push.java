@@ -23,12 +23,12 @@ public abstract class Push extends PushbulletObject implements Deletable, Dismis
     private PushType type;
 
     /**
-     * If the has already been dimissed
+     * Whether the push has already been dimissed
      */
     private boolean dismissed;
 
     /**
-     * The direction the push is sent to
+     * The direction the push was sent to
      */
     private Direction direction;
 
@@ -45,7 +45,7 @@ public abstract class Push extends PushbulletObject implements Deletable, Dismis
     private String channelIdentity;
 
     /**
-     * The client identity
+     * The client's identity
      */
     @SerializedName("client_iden")
     private String clientIdentity;
