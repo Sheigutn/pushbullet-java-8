@@ -15,7 +15,7 @@ import java.util.List;
 @Setter(AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Push extends PushbulletObject implements Deletable, Dismissable {
+public class Push extends PushbulletObject implements Deletable, Dismissable {
 
     /**
      * The type of the push
@@ -131,11 +131,15 @@ public abstract class Push extends PushbulletObject implements Deletable, Dismis
      * Get the title of this push
      * @return The title of this push
      */
-    public abstract String getTitle();
+    public String getTitle() {
+        return null;
+    }
 
     /**
      * Get the body of this push
      * @return The body of this push
      */
-    public abstract String getBody();
+    public String getBody() {
+        return null;
+    }
 }

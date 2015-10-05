@@ -8,6 +8,8 @@ import com.github.sheigutn.pushbullet.exception.PushbulletApiException;
 import com.github.sheigutn.pushbullet.gson.PushbulletContainerPostProcessor;
 import com.github.sheigutn.pushbullet.gson.RuntimeTypeAdapterFactory;
 import com.github.sheigutn.pushbullet.http.EntityEnclosingRequest;
+import com.github.sheigutn.pushbullet.http.ListRequestBuilder;
+import com.github.sheigutn.pushbullet.http.ListRequestType;
 import com.github.sheigutn.pushbullet.http.Request;
 import com.github.sheigutn.pushbullet.http.defaults.delete.DeleteAllPushesRequest;
 import com.github.sheigutn.pushbullet.http.defaults.get.*;
@@ -227,7 +229,7 @@ public class Pushbullet implements Pushable {
      * @return The list of accounts registered for this user
      */
     public List<Account> getAccounts() {
-        return ListUtil.fullList(this, new ListAccountsRequest(), ListResponse::getAccounts);
+        return newListRequest(ListRequestType.LIST_ACCOUNTS).completeList(true).execute();
     }
 
     /**
@@ -244,7 +246,7 @@ public class Pushbullet implements Pushable {
      * @return The list of blocked users
      */
     public List<Block> getBlocks() {
-        return ListUtil.fullList(this, new ListBlocksRequest(), ListResponse::getBlocks);
+        return newListRequest(ListRequestType.LIST_BLOCKS).completeList(true).execute();
     }
 
     /**
@@ -471,7 +473,7 @@ public class Pushbullet implements Pushable {
      * @return The list of incoming or outgoing pushes
      */
     public List<Push> getAllPushes() {
-        return ListUtil.fullList(this, new ListPushesRequest(), ListResponse::getPushes);
+        return newListRequest(ListRequestType.LIST_PUSHES).completeList(true).execute();
     }
 
     /**
@@ -502,9 +504,8 @@ public class Pushbullet implements Pushable {
      * @return A list of pushes
      */
     public List<Push> getNewPushes() {
-        List<Push> pushes = ListUtil.fullList(this, new ListPushesRequest().setModifiedAfter(newestModifiedAfter), ListResponse::getPushes);
-        handleNewest(pushes);
-        return pushes;
+        List<Push> pushes = newListRequest(ListRequestType.LIST_PUSHES).modifiedAfter(newestModifiedAfter).completeList(true).execute();
+        return handleNewest(pushes);
     }
 
     /**
@@ -521,7 +522,7 @@ public class Pushbullet implements Pushable {
                 .collect(Collectors.toList());
     }
 
-    private void handleNewest(List<Push> pushes) {
+    private List<Push> handleNewest(List<Push> pushes) {
         if(pushes.size() > 0) {
             Push push = pushes.get(0);
             double modified = push.getModified().doubleValue();
@@ -529,6 +530,7 @@ public class Pushbullet implements Pushable {
                 newestModifiedAfter = modified;
             }
         }
+        return pushes;
     }
 
     /**
@@ -546,7 +548,7 @@ public class Pushbullet implements Pushable {
      * @return A list of oauth clients
      */
     public List<OAuthClient> getOAuthClients() {
-        return ListUtil.fullList(this, new ListClientsRequest(), ListResponse::getClients);
+        return newListRequest(ListRequestType.LIST_CLIENTS).completeList(true).execute();
     }
 
     /**
@@ -564,7 +566,7 @@ public class Pushbullet implements Pushable {
      * @return A list of your own channels
      */
     public List<OwnChannel> getOwnChannels() {
-        return ListUtil.fullList(this, new ListChannelsRequest(), ListResponse::getChannels);
+        return newListRequest(ListRequestType.LIST_CHANNELS).completeList(true).execute();
     }
 
     /**
@@ -602,7 +604,7 @@ public class Pushbullet implements Pushable {
      * @return A list of chats held by the user
      */
     public List<Chat> getChats() {
-        return ListUtil.fullList(this, new ListChatsRequest(), ListResponse::getChats);
+        return newListRequest(ListRequestType.LIST_CHATS).completeList(true).execute();
     }
 
     /**
@@ -623,7 +625,7 @@ public class Pushbullet implements Pushable {
      */
     @Deprecated
     public List<Contact> getContacts() {
-        return ListUtil.fullList(this, new ListContactsRequest(), ListResponse::getContacts);
+        return newListRequest(ListRequestType.LIST_CONTACTS).completeList(true).execute();
     }
 
     /**
@@ -632,7 +634,7 @@ public class Pushbullet implements Pushable {
      * @return The list of registered devices
      */
     public List<Device> getDevices() {
-        return ListUtil.fullList(this, new ListDevicesRequest(), ListResponse::getDevices);
+        return newListRequest(ListRequestType.LIST_DEVICES).completeList(true).execute();
     }
 
     /**
@@ -665,7 +667,7 @@ public class Pushbullet implements Pushable {
      * @return A list of granted clients
      */
     public List<Grant> getGrants() {
-        return ListUtil.fullList(this, new ListGrantsRequest(), ListResponse::getGrants);
+        return newListRequest(ListRequestType.LIST_GRANTS).completeList(true).execute();
     }
 
     /**
@@ -673,7 +675,7 @@ public class Pushbullet implements Pushable {
      * @return A list of subscriptions
      */
     public List<Subscription> getSubscriptions() {
-        return ListUtil.fullList(this, new ListSubscriptionsRequest(), ListResponse::getSubscriptions);
+        return newListRequest(ListRequestType.LIST_SUBSCRIPTIONS).completeList(true).execute();
     }
 
     /**
@@ -827,6 +829,16 @@ public class Pushbullet implements Pushable {
      */
     public PushbulletWebsocketClient createWebsocketClient() {
         return new PushbulletWebsocketClient(this);
+    }
+
+    /**
+     * Returns a builder that can be used to set fields like modified_after, cursor, limit or active in the request
+     * @param type The type of the request to be used
+     * @param <T>  The generic type of the list
+     * @return A new {@link ListRequestBuilder} object
+     */
+    public <T> ListRequestBuilder<T> newListRequest(ListRequestType<T> type) {
+        return ListRequestBuilder.of(this, type);
     }
 
     @SneakyThrows

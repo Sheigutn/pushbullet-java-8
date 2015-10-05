@@ -116,12 +116,13 @@ import java.util.Map;
  * }</pre>
  */
 public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
-    private final Class<?> baseType;
+    private final Class<T> baseType;
+    private TypeAdapter<T> baseDelegateAdapter;
     private final String typeFieldName;
     private final Map<String, Class<?>> labelToSubtype = new LinkedHashMap<String, Class<?>>();
     private final Map<Class<?>, String> subtypeToLabel = new LinkedHashMap<Class<?>, String>();
 
-    private RuntimeTypeAdapterFactory(Class<?> baseType, String typeFieldName) {
+    private RuntimeTypeAdapterFactory(Class<T> baseType, String typeFieldName) {
         if (typeFieldName == null || baseType == null) {
             throw new NullPointerException();
         }
@@ -180,6 +181,10 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
             return null;
         }
 
+        if(baseDelegateAdapter == null) {
+            baseDelegateAdapter = gson.getDelegateAdapter(RuntimeTypeAdapterFactory.this, TypeToken.get(baseType));
+        }
+
         final Map<String, TypeAdapter<?>> labelToDelegate
                 = new LinkedHashMap<String, TypeAdapter<?>>();
         final Map<Class<?>, TypeAdapter<?>> subtypeToDelegate
@@ -191,13 +196,13 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
         }
 
         return new TypeAdapter<R>() {
+            @SuppressWarnings("unchecked")
             @Override
             public R read(JsonReader in) throws IOException {
                 JsonElement jsonElement = Streams.parse(in);
                 JsonElement labelJsonElement = jsonElement.getAsJsonObject().get(typeFieldName); //remove(typeFieldName) changed to get(typeFieldName)
                 if (labelJsonElement == null) {
-                    throw new JsonParseException("cannot deserialize " + baseType
-                            + " because it does not define a field named " + typeFieldName);
+                    return (R) baseDelegateAdapter.fromJsonTree(jsonElement);
                 }
                 String label = labelJsonElement.getAsString();
                 @SuppressWarnings("unchecked") // registration requires that subtype extends T
