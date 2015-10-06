@@ -53,11 +53,20 @@ public class EphemeralEncryptionHandler implements TypeAdapterFactory {
             Encryption encryption = EphemeralEncryptionHandler.this.pushbullet.getEncryption();
             if(encryption != null) {
                 in.beginObject();
-                in.nextName();
-                boolean encrypted = in.nextBoolean();
-                in.nextName();
-                String cipherText = in.nextString();
-                cipherText = cipherText.replaceAll("\\n", "");
+                String cipherText = null;
+                boolean encrypted = false;
+                while(in.hasNext()) {
+                    switch (in.nextName()) {
+                        case "ciphertext":
+                            cipherText = in.nextString().replaceAll("\\n", "");
+                            break;
+                        case "encrypted":
+                            encrypted = in.nextBoolean();
+                            break;
+                        default:
+                            in.skipValue();
+                    }
+                }
                 in.endObject();
                 if(encrypted) {
                     String decrypted = encryption.decrypt(cipherText);

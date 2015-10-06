@@ -85,8 +85,7 @@ public class ListRequestBuilder<T> {
      * @return This {@link ListRequestBuilder}
      */
     public ListRequestBuilder<T> limit(int limit) {
-        limit = Math.max(limit, 0);
-        this.limit = Math.min(limit, DEFAULT_LIMIT);
+        this.limit = Math.min(Math.max(limit, 0), DEFAULT_LIMIT);
         return this;
     }
 
