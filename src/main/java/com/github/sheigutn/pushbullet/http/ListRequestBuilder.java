@@ -2,6 +2,7 @@ package com.github.sheigutn.pushbullet.http;
 
 import com.github.sheigutn.pushbullet.Pushbullet;
 import com.github.sheigutn.pushbullet.http.defaults.ListItemsRequest;
+import com.github.sheigutn.pushbullet.items.ListResponse;
 import com.github.sheigutn.pushbullet.util.ListUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,11 @@ public class ListRequestBuilder<T> {
     private boolean completeList = false;
 
     /**
+     * The returned cursor if there is any (has to be used after {@link #execute()})
+     */
+    private String lastReturnedCursor;
+
+    /**
      * Returns a new {@link ListRequestBuilder} instance
      * @param pushbullet      The {@link Pushbullet} instance to use
      * @param listRequestType The type of the request to be used
@@ -101,6 +107,13 @@ public class ListRequestBuilder<T> {
                 .setModifiedAfter(modifiedAfter)
                 .setLimit(limit)
                 .setOnlyShowActiveItems(onlyShowActiveItems);
-        return completeList ? ListUtil.fullList(pushbullet, itemRequest, request.getFunction()) : request.getFunction().apply(pushbullet.executeRequest(itemRequest));
+        if(completeList) {
+            return ListUtil.fullList(pushbullet, itemRequest, request.getFunction());
+        }
+        else {
+            ListResponse response = pushbullet.executeRequest(itemRequest);
+            lastReturnedCursor = response.getCursor();
+            return request.getFunction().apply(response);
+        }
     }
 }
