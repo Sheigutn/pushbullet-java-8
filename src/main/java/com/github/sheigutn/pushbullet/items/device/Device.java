@@ -1,13 +1,13 @@
 package com.github.sheigutn.pushbullet.items.device;
 
-import com.github.sheigutn.pushbullet.ephemeral.SmsReplyEphemeral;
-import com.github.sheigutn.pushbullet.interfaces.SmsSendable;
-import com.github.sheigutn.pushbullet.items.PushbulletObject;
 import com.github.sheigutn.pushbullet.ephemeral.ClipEphemeral;
+import com.github.sheigutn.pushbullet.ephemeral.SmsReplyEphemeral;
 import com.github.sheigutn.pushbullet.http.defaults.delete.DeleteSpecificDeviceRequest;
 import com.github.sheigutn.pushbullet.http.defaults.get.ListPhonebookRequest;
 import com.github.sheigutn.pushbullet.interfaces.Deletable;
 import com.github.sheigutn.pushbullet.interfaces.Pushable;
+import com.github.sheigutn.pushbullet.interfaces.SmsSendable;
+import com.github.sheigutn.pushbullet.items.PushbulletObject;
 import com.github.sheigutn.pushbullet.items.push.sendable.ReceiverType;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.push.sent.Push;
@@ -84,6 +84,9 @@ public class Device extends PushbulletObject implements Deletable, Pushable, Sms
      */
     private String model;
 
+    @SerializedName("has_sms")
+    private boolean mobileDeviceWithSms;
+
     public Push push(SendablePush push) {
         if(!isPushable()) return null;
         push = push.clone();
@@ -132,6 +135,7 @@ public class Device extends PushbulletObject implements Deletable, Pushable, Sms
     @Override
     public void sendSMS(String number, String body) {
         if(!isActive()) return;
+        if(!isMobileDeviceWithSms()) return;
         SmsReplyEphemeral smsReplyEphemeralPush = new SmsReplyEphemeral();
         smsReplyEphemeralPush
                 .setMessage(body)
