@@ -1,13 +1,13 @@
 package com.github.sheigutn.pushbullet.items.push.sendable.defaults;
 
-import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.push.PushType;
-import lombok.Getter;
+import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
+import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-@Getter
+@Data
 @ToString(callSuper = true)
 public class SendableLinkPush extends SendablePush {
 

@@ -2,14 +2,14 @@ package com.github.sheigutn.pushbullet.items.push.sendable.defaults;
 
 import com.github.sheigutn.pushbullet.items.push.PushType;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.List;
 
 @Accessors(chain = true)
-@Getter
+@Data
 @ToString(callSuper = true)
 @Deprecated
 public class SendableListPush extends SendablePush {
