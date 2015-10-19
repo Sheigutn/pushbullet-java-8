@@ -6,6 +6,7 @@ import com.github.sheigutn.pushbullet.items.file.UploadFile;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.push.sendable.defaults.*;
 import com.github.sheigutn.pushbullet.items.push.sent.Push;
+import com.github.sheigutn.pushbullet.items.push.sent.defaults.*;
 
 import java.util.List;
 
@@ -35,8 +36,8 @@ public interface Pushable {
      * @param url   The link of the push
      * @return An instance of the sent push
      */
-    default Push pushLink(String title, String body, String url) {
-        return push(new SendableLinkPush(title, body, url));
+    default LinkPush pushLink(String title, String body, String url) {
+        return (LinkPush) push(new SendableLinkPush(title, body, url));
     }
 
     /**
@@ -46,8 +47,8 @@ public interface Pushable {
      * @return An instance of the sent push
      */
     @Deprecated
-    default Push pushAddress(String name, String address) {
-        return push(new SendableAddressPush(name, address));
+    default AddressPush pushAddress(String name, String address) {
+        return (AddressPush) push(new SendableAddressPush(name, address));
     }
 
     /**
@@ -56,8 +57,8 @@ public interface Pushable {
      * @param body  The body of the note
      * @return An instance of the sent push
      */
-    default Push pushNote(String title, String body) {
-        return push(new SendableNotePush(title, body));
+    default NotePush pushNote(String title, String body) {
+        return (NotePush) push(new SendableNotePush(title, body));
     }
 
     /**
@@ -67,8 +68,8 @@ public interface Pushable {
      * @return An instance of the sent push
      */
     @Deprecated
-    default Push pushList(String title, List<String> items) {
-        return push(new SendableListPush(title, items));
+    default ListPush pushList(String title, List<String> items) {
+        return (ListPush) push(new SendableListPush(title, items));
     }
 
     /**
@@ -77,7 +78,7 @@ public interface Pushable {
      * @param file The file of this push
      * @return An instance of the sent push
      */
-    default Push pushFile(String body, UploadFile file) {
-        return push(new SendableFilePush(body, file));
+    default FilePush pushFile(String body, UploadFile file) {
+        return (FilePush) push(new SendableFilePush(body, file));
     }
 }
