@@ -12,13 +12,13 @@ import com.github.sheigutn.pushbullet.items.push.sendable.defaults.*;
 import com.github.sheigutn.pushbullet.items.file.UploadFile;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
 
-@Data
+@Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OwnChannel extends PushbulletObject implements Deletable {

@@ -4,11 +4,11 @@ import com.github.sheigutn.pushbullet.http.defaults.delete.DeleteSpecificGrantRe
 import com.github.sheigutn.pushbullet.items.PushbulletObject;
 import com.github.sheigutn.pushbullet.interfaces.Deletable;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Data
+@Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Grant extends PushbulletObject implements Deletable {

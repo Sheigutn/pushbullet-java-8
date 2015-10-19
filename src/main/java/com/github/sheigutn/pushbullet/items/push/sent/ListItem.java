@@ -1,10 +1,10 @@
 package com.github.sheigutn.pushbullet.items.push.sent;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-@Data
+@Getter
 public class ListItem {
 
     /**

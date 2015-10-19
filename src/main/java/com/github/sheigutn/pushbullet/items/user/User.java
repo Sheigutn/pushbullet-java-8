@@ -9,11 +9,11 @@ import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Data
+@Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends PushbulletObject implements Pushable, Blockable {

@@ -13,14 +13,15 @@ import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Device extends PushbulletObject implements Deletable, Pushable, SmsSendable {
@@ -85,7 +86,8 @@ public class Device extends PushbulletObject implements Deletable, Pushable, Sms
     private String model;
 
     @SerializedName("has_sms")
-    private boolean mobileDeviceWithSms;
+    @Accessors(fluent = true)
+    private boolean hasSms;
 
     public Push push(SendablePush push) {
         if(!isPushable()) return null;
@@ -135,7 +137,7 @@ public class Device extends PushbulletObject implements Deletable, Pushable, Sms
     @Override
     public void sendSMS(String number, String body) {
         if(!isActive()) return;
-        if(!isMobileDeviceWithSms()) return;
+        if(!hasSms()) return;
         SmsReplyEphemeral smsReplyEphemeralPush = new SmsReplyEphemeral();
         smsReplyEphemeralPush
                 .setMessage(body)

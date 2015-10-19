@@ -9,11 +9,11 @@ import com.github.sheigutn.pushbullet.items.push.sendable.ReceiverType;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Data
+@Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ChatUser extends PushbulletIdentifiable implements Pushable, Blockable {

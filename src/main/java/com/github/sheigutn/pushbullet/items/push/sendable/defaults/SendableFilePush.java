@@ -4,12 +4,12 @@ import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.file.UploadFile;
 import com.github.sheigutn.pushbullet.items.push.PushType;
 import com.google.gson.annotations.SerializedName;
-import lombok.Data;
+import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-@Data
+@Getter
 @ToString(callSuper = true)
 public class SendableFilePush extends SendablePush {
 

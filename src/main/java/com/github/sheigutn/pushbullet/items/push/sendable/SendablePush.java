@@ -2,10 +2,7 @@ package com.github.sheigutn.pushbullet.items.push.sendable;
 
 import com.github.sheigutn.pushbullet.items.push.PushType;
 import com.google.gson.annotations.SerializedName;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
-import lombok.SneakyThrows;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)

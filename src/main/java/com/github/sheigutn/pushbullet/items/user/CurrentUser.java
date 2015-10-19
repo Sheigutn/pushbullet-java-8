@@ -4,11 +4,11 @@ import com.github.sheigutn.pushbullet.http.defaults.post.UpdatePreferencesReques
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Data
+@Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CurrentUser extends User {
@@ -44,7 +44,7 @@ public class CurrentUser extends User {
         throw new UnsupportedOperationException();
     }
 
-    @Data
+    @Getter
     public class GoogleUserInfo {
 
         /**

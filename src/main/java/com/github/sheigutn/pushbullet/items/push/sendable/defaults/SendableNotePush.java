@@ -2,12 +2,12 @@ package com.github.sheigutn.pushbullet.items.push.sendable.defaults;
 
 import com.github.sheigutn.pushbullet.items.push.PushType;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
-import lombok.Data;
+import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-@Data
+@Getter
 @ToString(callSuper = true)
 public class SendableNotePush extends SendablePush {
 

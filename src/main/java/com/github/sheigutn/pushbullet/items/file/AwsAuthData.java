@@ -2,10 +2,10 @@ package com.github.sheigutn.pushbullet.items.file;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AwsAuthData {
 

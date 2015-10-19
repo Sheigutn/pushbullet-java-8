@@ -11,12 +11,9 @@ import com.github.sheigutn.pushbullet.interfaces.Mutable;
 import com.github.sheigutn.pushbullet.interfaces.Pushable;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.user.ChatUser;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-@Data
+@Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Chat extends PushbulletObject implements Deletable, Mutable, Pushable, Blockable {

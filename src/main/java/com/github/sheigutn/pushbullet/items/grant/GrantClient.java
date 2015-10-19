@@ -3,11 +3,11 @@ package com.github.sheigutn.pushbullet.items.grant;
 import com.github.sheigutn.pushbullet.items.PushbulletIdentifiable;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Data
+@Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GrantClient extends PushbulletIdentifiable {

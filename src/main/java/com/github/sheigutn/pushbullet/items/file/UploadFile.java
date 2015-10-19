@@ -1,9 +1,9 @@
 package com.github.sheigutn.pushbullet.items.file;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class UploadFile {
 
     /**

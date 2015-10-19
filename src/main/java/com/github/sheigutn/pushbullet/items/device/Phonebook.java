@@ -3,12 +3,12 @@ package com.github.sheigutn.pushbullet.items.device;
 import com.github.sheigutn.pushbullet.items.PushbulletContainer;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
+@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Phonebook extends PushbulletContainer {
 

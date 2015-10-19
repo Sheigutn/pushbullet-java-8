@@ -11,12 +11,13 @@ import com.github.sheigutn.pushbullet.items.oauth.OAuthClient;
 import com.github.sheigutn.pushbullet.items.push.sent.Push;
 import com.github.sheigutn.pushbullet.items.user.Contact;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ListResponse {
 
@@ -73,6 +74,7 @@ public class ListResponse {
     /**
      * Cursor for pagination
      */
+    @Setter
     private String cursor;
 
     public ListResponse addAll(ListResponse other) {

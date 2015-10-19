@@ -2,12 +2,9 @@ package com.github.sheigutn.pushbullet.items.device;
 
 import com.github.sheigutn.pushbullet.items.PushbulletContainer;
 import com.google.gson.annotations.SerializedName;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Data
+@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PhonebookEntry extends PushbulletContainer {
 
