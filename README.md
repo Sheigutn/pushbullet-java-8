@@ -43,3 +43,7 @@ String apiToken = ...;
 String password = ...;
 Pushbullet pushbullet = new Pushbullet(apiToken, password);
 ```
+
+# Donate
+
+If you want to donate to me, just use my bitcoin address: 1K3yoaHnbrYSNwK1d8suDxcEgwQD4Y9Fso
