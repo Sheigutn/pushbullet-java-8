@@ -36,7 +36,7 @@ String apiToken = ...;
 Pushbullet pushbullet = new Pushbullet(apiToken);
 ```
 
-If you need end-to-end encryption, apply the password as the second parameter:
+For end-to-end encryption, you have to install the Unlimited Strength Jurisdiction Policy Files first. These are available [here](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html).
 
 ```java
 String apiToken = ...;
