@@ -149,7 +149,11 @@ public class Pushbullet implements Pushable {
                             .registerSubtype(ClipEphemeral.class, "clip")
                             .registerSubtype(DismissalEphemeral.class, "dismissal")
                             .registerSubtype(NotificationEphemeral.class, "mirror")
-                            .registerSubtype(SmsReplyEphemeral.class, "message_extension_reply"))
+                            .registerSubtype(SmsReplyEphemeral.class, "message_extension_reply")
+                            .registerSubtype(SmsChangedEphemeral.class, "sms_changed"))
+            .registerTypeAdapterFactory(
+		            RuntimeTypeAdapterFactory.of(SmsNotification.class)
+            )
             .registerTypeAdapterFactory(new EphemeralEncryptionHandler(this))
             .create();
 

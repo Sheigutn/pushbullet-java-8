@@ -30,6 +30,9 @@ public class Ephemeral {
         @SerializedName("messaging_extension_reply")
         SMS_REPLY,
 
+        @SerializedName("sms_changed")
+        SMS_CHANGED,
+
         /**
          * Used for universal copy paste
          */
